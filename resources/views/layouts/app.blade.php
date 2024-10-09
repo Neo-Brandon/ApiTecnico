@@ -6,14 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>AppTecnico</title>
-
+    <!-- Cargar jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
 
-    <!-- <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css"> -->
-
-    <!-- <script src="../bootstrap/js/bootstrap.bundle.min.js"></script> -->
 </head>
 <style>
+    
+    .w-90 {
+            width: 90% !important;
+        }
+
     /* Estilo para el botón */
     .sub-btn-w {
         text-decoration: none;
@@ -90,7 +93,7 @@
 
     .my-custom-input {
         background-color: #d2dbf3; /* Color de fondo personalizado */
-        color: #ffffff;              /* Color del texto */
+        color: #201e1e;              /* Color del texto */
     }
 
     .my-custom-input:focus {
@@ -99,9 +102,20 @@
         box-shadow: 0 0 5px rgba(255, 235, 59, 0.5); /* Efecto visual al enfocarse */
     }
 
+    input {
+        background-color: #d2dbf3; /* Color de fondo personalizado */
+        color: #201e1e;              /* Color del texto */
+    }
+
+    input:focus {
+        background-color: #99a2b9; /* Color de fondo cuando se hace foco en el input */
+        outline: none;             /* Quitar borde de enfoque predeterminado */
+        box-shadow: 0 0 5px rgba(255, 235, 59, 0.5); /* Efecto visual al enfocarse */
+    }
+
     /*-------------------------------------------------------------------------------*/
 
-    body {
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -212,10 +226,61 @@
             padding: 10px 0;
         }
 
+    a {
+        text-decoration: none; /* Elimina el subrayado */
+        color: inherit; /* Mantiene el color actual del texto o imagen */
+    }
+
+    @media (max-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas en pantallas pequeñas */
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr); /* Dos columnas en pantallas medianas */
+    }
+}
+
+/* Estilos tecnico ------------------------------------------------------------------------------*/
+
+
+.task-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+}
+
+.task-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 1rem 0;
+    padding: 1rem;
+    width: 80%;
+}
+
+.task-card h2 {
+    margin: 0 0 0.5rem 0;
+}
+
+.task-card p {
+    margin: 0.5rem 0;
+}
+
+.task-card .timestamp {
+    color: #888;
+    font-size: 0.9rem;
+    text-align: right;
+}
+
 
 </style>
 <body>
-    <header>
+    <header class="">
         <h1>Inicio</h1>
         <div class="menu-icon">&#9776;</div>
         <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
@@ -232,6 +297,7 @@
 
     <!-- Overlay para cerrar el menú al hacer clic fuera -->
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
     <div id="contenido" name="contenido" class="">
         <div class=""> <!-- Header-->
             <div class=""> <!-- Si queremos dividir el contenido en un submenus habra que agregar otro-->
@@ -240,19 +306,37 @@
         </div>
     </div>
     <script>
-        function toggleMenu() {
+        document.addEventListener("DOMContentLoaded", function() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('overlay');
-
-            if (sidebar.style.right === '-250px') {
-                sidebar.style.right = '0'; // Muestra el menú desde el lado derecho
-                overlay.style.display = 'block'; // Muestra el overlay
-            } else {
-                sidebar.style.right = '-250px'; // Oculta el menú
-                overlay.style.display = 'none'; // Oculta el overlay
+    
+            // Establecer estado inicial del menú oculto
+            sidebar.style.right = '-250px';
+            overlay.style.display = 'none';
+    
+            // Añadir evento al icono de menú
+            const menuIcons = document.getElementsByClassName('menu-icon');
+            for (let i = 0; i < menuIcons.length; i++) {
+                menuIcons[i].addEventListener('click', toggleMenu);
             }
-        }
-
+    
+            // Añadir evento al overlay para cerrar el menú
+            overlay.addEventListener('click', closeMenu);
+    
+            function toggleMenu() {
+                if (sidebar.style.right === '-250px') {
+                    sidebar.style.right = '0'; // Mostrar el sidebar
+                    overlay.style.display = 'block'; // Mostrar el overlay
+                } else {
+                    closeMenu(); // Llamar a la función de cerrar el menú
+                }
+            }
+    
+            function closeMenu() {
+                sidebar.style.right = '-250px'; // Ocultar el sidebar
+                overlay.style.display = 'none'; // Ocultar el overlay
+            }
+        });
     </script>
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
 </body>

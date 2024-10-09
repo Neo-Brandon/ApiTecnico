@@ -1,5 +1,3 @@
-import './bootstrap';
-
 document.addEventListener('DOMContentLoaded', () => {
     const taskContainer = document.querySelector('.task-container');
 

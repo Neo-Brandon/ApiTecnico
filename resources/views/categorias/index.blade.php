@@ -7,17 +7,16 @@
         }
     </style>
 
-    <div class="container-xxl">
-        <div class="text-center">
-            <div class="titulo">
-                <h1>Categorias de Tareas</h1>
+        <div class="container-xxl d-flex flex-column justify-content-center align-items-center" >
+            <div class="welcome text-center">
+                <h2><strong>Categorias</strong></h2>
+                <p>Registre categorias o revise las existentes</p>
             </div>
-
-            <a type="btn" class="sub-btn-w btn my-custom-btn" style="margin-top: 15pt; margin-left:15pt"
-                href="{{ route('categoria.create') }}">Añadir Categoria</a>
+            <a type="btn" class="sub-btn-w btn my-custom-btn" href="{{ route('categoria.create') }}">Añadir Categoría</a>
         </div>
+
         <div class="d-flex justify-content-center"> <!-- Para centrar el contenido -->
-            <table class="table table-striped table-hover table-bordered w-75 mx-auto" style="margin-top: 15pt">
+            <table class="table table-striped table-hover table-bordered w-90 mx-auto" style="margin-top: 15pt">
                 <thead class="table-dark">
                     <tr>
                         <th class="col-3 text-center">Nombres de categorias</th>

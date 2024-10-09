@@ -6,7 +6,7 @@
     <title>Panel de Administrador</title>
 
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
-    
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,7 +25,7 @@
 
         header {
             background-color: white;
-            width: %;
+            width: 100%;
             padding: 20px;
             text-align: left;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -130,14 +130,6 @@
         <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
     </header>
     
-    <!-- Menú desplegable-->
-    <div class="sidebar" id="sidebar">
-        <a href="#">Dashboard</a>
-        <a href="#">Asignar Tarea</a>
-        <a href="#">Comprobar Tareas</a>
-        <a href="#">Estadísticas</a>
-        <a href="#">Ayuda</a>
-    </div>
 
     <!-- Overlay para cerrar el menú al hacer clic fuera -->
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>

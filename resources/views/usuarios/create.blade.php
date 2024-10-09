@@ -1,10 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container d-flex justify-content-center">
+<!--
+<div class="container-xxl d-flex flex-column justify-content-center align-items-center" >
+    <div class="welcome text-center">
+        <h2><strong>Registrar usuario</strong></h2>
+        <p>Registre nuevos tecnicos o administradores</p>
+    </div>
+    -->
+    <div class=" container-xxl d-flex justify-content-center">
         <!-- Ajustes para la responsividad de la pagina-->
         <div class="col-12 col-md-8 col-lg-6"> <!-- Ajusta el tamaño dependiendo del dispositivo -->
-            <h1 class="text-center mb-4">Registrar Usuario</h1>
+            <div class="welcome text-center">
+                <h2><strong>Registrar usuario</strong></h2>
+                <p>Registre nuevos tecnicos o administradores</p>
+            </div>
 
             <form action="{{ route('usuario.store') }}" method="post">
                 @csrf
@@ -46,7 +56,7 @@
                 <!-- Ajustes para la responsividad de la pagina-->
                 <!-- Envolver el botón en un div con el mismo ancho que el input -->
                 <div class="mb-3">
-                    <button class="btn btn-primary w-100" type="submit">Guardar</button>
+                    <button class="btn btn-primary my-custom-btn w-100" type="submit">Guardar</button>
                 </div>
             </form>
         </div>

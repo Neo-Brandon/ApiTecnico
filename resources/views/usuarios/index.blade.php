@@ -5,6 +5,7 @@
         .titulo-perm{
             margin-left: 120pt
         }
+
     </style>
 
 <!--
@@ -14,22 +15,22 @@
                 <h1>Usuarios</h1>
             </div>
 -->
-<div class="container-xxl d-flex flex-column justify-content-center align-items-center" >
-    <div class="welcome text-center">
-        <h2><strong>Usuarios</strong></h2>
-        <p>Registre nuevos tecnicos o administradores</p>
+    <div class="container-xxl d-flex flex-column justify-content-center align-items-center" >
+        <div class="welcome text-center">
+            <h2><strong>Usuarios</strong></h2>
+            <p>Registre nuevos tecnicos o administradores</p>
+        </div>
+
+        <a type="btn" class="sub-btn-w btn my-custom-btn" href="{{ route('usuario.create') }}">Añadir Usuario</a>
     </div>
 
-    <a type="btn" class="sub-btn-w btn my-custom-btn" href="{{ route('usuario.create') }}">Añadir Usuario</a>
-</div>
-
         <div class="d-flex justify-content-center"> <!-- Para centrar el contenido -->
-            <table class="table table-striped table-hover table-bordered w-75 mx-auto" style="margin-top: 15pt">
+            <table class="table table-striped table-hover table-bordered w-90 mx-auto" style="margin-top: 15pt">
                 <thead class="table-dark">
                     <tr>
                         <th class="col-3 text-center">Nombre</th>
                         <th class="col-3 text-center">Correo</th>
-                        <th class="col-md-6 text-center">Nivel</th>
+                        <th class="col-md-3 text-center">Nivel</th>
                         <th class="col-3 text-center">Acciones</th>
                     </tr>
                 </thead>
@@ -63,4 +64,6 @@
         </div>
         {{ $usuarios->links('vendor.pagination.bootstrap-4') }}
     </div>
+    <!-- Incluir JS de Select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
 @endsection

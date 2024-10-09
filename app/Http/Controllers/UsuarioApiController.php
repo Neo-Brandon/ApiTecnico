@@ -14,15 +14,6 @@ class UsuarioApiController extends Controller
     public function index(){
 
         $usuario = Usuario::all();
-       /*
-        if($usuario->isEmpty()){
-            $data = [
-                'message' => 'No se encontraron usuarios',
-                'status' => '404'
-            ];
-            return response()->json($data, 200);
-        }
-        */
 
         $data = [
             'message' => $usuario,
@@ -34,9 +25,12 @@ class UsuarioApiController extends Controller
     public function store(Request $request){
         $validator = Validator::make($request->all(),[
             'nombre' => 'required|string|unique:usuarios,nombre',
-            'correo' => 'required|string|unique:usuarios,correo',
+            'correo' => 'required|email|string|unique:usuarios,correo',
             'pass' => 'required|string',
             'permiso_id' => 'required|exists:permisos,id' // Validar que el permiso existe
+        ],[
+            'email.required' => 'El campo correo es obligatorio.',
+            'email.email' => 'Por favor, introduce una dirección de correo electrónico válida.',
         ]);
 
         if($validator->fails()){

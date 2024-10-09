@@ -7,18 +7,18 @@
         }
     </style>
 
-    <div class="container-xxl">
-        <div class="text-center">
-            <div class="titulo">
-                <h1>Permisos</h1>
+        <div class="container-xxl d-flex flex-column justify-content-center align-items-center" >
+            <div class="welcome text-center">
+                <h2><strong>Permisos</strong></h2>
+                <p>Registre algun otro permiso si se requiere</p>
             </div>
 
-            <a type="btn" class="sub-btn-w btn my-custom-btn" style="margin-top: 15pt; margin-left:15pt"
-                href="{{ route('permiso.create') }}">Añadir Permiso</a>
+            <a type="btn" class="sub-btn-w btn my-custom-btn" href="{{ route('permiso.create') }}">Añadir Permiso</a>
         </div>
+
         <div class="d-flex justify-content-center"> <!-- Para centrar el contenido -->
             <table class="table table-striped table-hover table-bordered w-75 mx-auto" style="margin-top: 15pt">
-                <thead class="table-secondary">
+                <thead class="table-dark">
                     <tr>
                         <th class="col-3 text-center">Tipo de permiso</th>
                         <th class="col-3 text-center">Acciones</th>

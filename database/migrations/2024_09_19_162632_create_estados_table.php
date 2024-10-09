@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categorias', function (Blueprint $table) {
+        Schema::create('estados', function (Blueprint $table) {
             $table->id();
-            $table->string('categoria', length: 35);
+            $table->string('nombre_estado');
             $table->timestamps();
         });
     }
@@ -23,11 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //Eliminamos la veriicacion de llaves foraneas para borrar
-        Schema::disableForeignKeyConstraints();
-        
-        Schema::dropIfExists('categorias');
-        //reactivamos las verificaciones para integridad
-        Schema::enableForeignKeyConstraints();
+        Schema::dropIfExists('estados');
     }
 };

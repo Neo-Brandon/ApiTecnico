@@ -9,10 +9,13 @@ class Tarea extends Model
 {
     use HasFactory;
 
+    protected $table = "tareas";
+
     protected $fillable = [
         'titulo',
         'descripcion',
-        'categoria_id'
+        'categoria_id',
+        'estado_id',
     ];
 
     public function categoria()
@@ -24,5 +27,11 @@ class Tarea extends Model
     public function usuarios()
     {
         return $this->belongsToMany(Usuario::class, 'tarea_tecnico'); // Cambia el nombre de la tabla pivote según corresponda
+    }
+
+    // Definir la relación con el modelo Estado
+    public function estado()
+    {
+        return $this->belongsTo(Estado::class);
     }
 }

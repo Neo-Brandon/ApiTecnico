@@ -22,62 +22,66 @@ class TareaApiController extends Controller
             ], 404);
         }
 
+        /*
         return response()->json([
             'tareas' => $tareas,
             'status' => 200
         ]);
+        */
+
+        return response()->json(
+             $tareas
+        );
     }
 
 
     public function store(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'titulo' => 'required|string|max:255',
-        'descripcion' => 'required|string',
-        'categoria_id' => 'required|exists:categorias,id', // Asegúrate de que la categoría existe
-        'usuarios' => 'required|array', // Validar que venga un array de usuarios
-        'usuarios.*' => 'exists:usuarios,id' // Validar que cada usuario exista en la tabla usuarios
-    ]);
+    {
+        $validator = Validator::make($request->all(), [
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'categoria_id' => 'required|exists:categorias,id', // Asegúrate de que la categoría existe
+            'usuarios' => 'required|array', // Validar que venga un array de usuarios
+            'usuarios.*' => 'exists:usuarios,id' // Validar que cada usuario exista en la tabla usuarios
+        ]);
 
-    if ($validator->fails()) {
+        if ($validator->fails()) {
+            $data = [
+                'message' => 'Error en la validación de los datos',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ];
+            return response()->json($data, 400);
+        }
+
+        // Crear la tarea con la categoría
+        $tarea = Tarea::create([
+            'titulo' => $request->titulo,
+            'descripcion' => $request->descripcion,
+            'categoria_id' => $request->categoria_id // Asignar la categoría
+        ]);
+
+        // Si la tarea no se crea correctamente
+        if (!$tarea) {
+            $data = [
+                'message' => 'Error al crear la tarea',
+                'status' => 500
+            ];
+            return response()->json($data, 500);
+        }
+
+        // Asignar usuarios a la tarea
+        $tarea->usuarios()->attach($request->usuarios); // Cambia 'tecnicos' por 'usuarios'
+
+        // Respuesta de éxito
         $data = [
-            'message' => 'Error en la validación de los datos',
-            'errors' => $validator->errors(),
-            'status' => 400
+            'message' => 'Tarea creada exitosamente',
+            'tarea' => $tarea,
+            'status' => 201
         ];
-        return response()->json($data, 400);
+        return response()->json($data, 201);
     }
-
-    // Crear la tarea con la categoría
-    $tarea = Tarea::create([
-        'titulo' => $request->titulo,
-        'descripcion' => $request->descripcion,
-        'categoria_id' => $request->categoria_id // Asignar la categoría
-    ]);
-
-    // Si la tarea no se crea correctamente
-    if (!$tarea) {
-        $data = [
-            'message' => 'Error al crear la tarea',
-            'status' => 500
-        ];
-        return response()->json($data, 500);
-    }
-
-    // Asignar usuarios a la tarea
-    $tarea->usuarios()->attach($request->usuarios); // Cambia 'tecnicos' por 'usuarios'
-
-    // Respuesta de éxito
-    $data = [
-        'message' => 'Tarea creada exitosamente',
-        'tarea' => $tarea,
-        'status' => 201
-    ];
-    return response()->json($data, 201);
-}
-
-
-
+    
 /*
     public function store(Request $request){
         $validator = Validator::make($request->all(),[

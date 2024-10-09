@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container"> <!-- Uso de 'container' para mayor control de layout -->
-        <h1 class="text-center mb-4">Editar Categoría</h1>
-
+    <div class="container-xxl d-flex flex-column justify-content-center align-items-center" >
+        <div class="welcome text-center">
+            <h2><strong>Categorias</strong></h2>
+            <p>Registre categorias</p>
+        </div>
+    </div>
         <form action="{{ route('categoria.update', $categoria->id) }}" method="post">
             @csrf
             @method('PUT') <!-- Usa el método correcto para la actualización -->

@@ -4,11 +4,27 @@ use App\Models\Permiso;
 use App\Http\Controllers\permisoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\TareaController;
 use Illuminate\Support\Facades\Route;
-
+/*
 Route::get('/', function () {
     return view('index');
 });
+*/
+// Administrador -----------------------------------------------------------------------------------
+Route::get('/admin', function () {
+    return view('/admin/index');
+});
+
+Route::get('/admin/añadir', function () {
+    return view('/admin/añadir');
+});
+
+// Tecnico -----------------------------------------------------------------------------------
+Route::get('/tecnico', function () {
+    return view('/tecnico/index');
+});
+
 
 // Rutas Permisos -------------------------------------------------------------------------------------------
 
@@ -39,3 +55,13 @@ Route:: post('/usuarios', [UsuarioController::class, 'store'])->name('usuario.st
 Route:: delete('/usuarios/delete/{id}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
 Route:: get('/usuarios/edit/{id}', [UsuarioController::class, 'edit'])-> name('usuario.edit');
 Route:: put('/usuarios/update/{id}', [UsuarioController::class, 'update'])-> name('usuario.update');
+
+// Rutas Usuarios -------------------------------------------------------------------------------------------
+
+Route:: get('/tareas', [TareaController::class, 'index'])-> name('tarea.index');
+Route:: get('/tareas/create', [TareaController::class, 'create'])->name('tarea.create');
+Route:: get('/tareas/{id}', [TareaController::class, 'show'])->name('tarea.show');
+Route:: post('/tareas', [TareaController::class, 'store'])->name('tarea.store');
+Route:: delete('/tareas/delete/{id}', [TareaController::class, 'destroy'])->name('tarea.destroy');
+Route:: get('/tareas/edit/{id}', [TareaController::class, 'edit'])-> name('tarea.edit');
+Route:: put('/tareas/update/{id}', [TareaController::class, 'update'])-> name('tarea.update');
