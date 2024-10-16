@@ -14,9 +14,9 @@ class EstadosTableSeeder extends Seeder
     public function run(): void
     {
         DB::table('estados')->insert([
-            ['nombre_estado' => 'Pendiente'], // Rojo
+            ['nombre_estado' => 'Pendiente'], // Gris
             ['nombre_estado' => 'Completada'], // Verde
-            ['nombre_estado' => 'Pospuesta'], // Azul
+            ['nombre_estado' => 'Pospuesta'], // Amarillo
         ]);
     }
 }

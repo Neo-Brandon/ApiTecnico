@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Usuario;
+use App\Models\User;
 use App\Models\Permiso; // Importar el modelo Permiso
 use Illuminate\Http\Request;
 
 class UsuarioController extends Controller
 {
     public function index(){
-        $usuarios = usuario::paginate(8);
+        $usuarios = User::paginate(8);
 
         return view('usuarios.index', compact('usuarios'))
         ->with('i', (request()->input('page', 1) - 1)*8);
     }
 
     public function show($id){
-        $usuario = Usuario::find($id);        //Encontrará el ID que estaba buscando
+        $usuario = User::find($id);        //Encontrará el ID que estaba buscando
         return view('usuarios.show', compact('usuario'));
     }
 
@@ -29,19 +29,19 @@ class UsuarioController extends Controller
 
     public function store(Request $request){
         $request->validate([
-            'nombre' => 'required|string|unique:usuarios,nombre',
-            'correo' => 'required|email|string|unique:usuarios,correo',
-            'pass' => 'required|string',
+            'name' => 'required|string|unique:users,name',
+            'email' => 'required|email|string|unique:users,email',
+            'password' => 'required|string',
             'permiso_id' => 'required|exists:permisos,id' // Validar que el permiso existe
         ],[
             'email.required' => 'El campo correo es obligatorio.',
             'email.email' => 'Por favor, introduce una dirección de correo electrónico válida.',
         ]);
 
-        $usuario = new usuario();
-        $usuario -> nombre = $request->nombre;
-        $usuario -> correo = $request->correo;
-        $usuario->pass = bcrypt($request->pass); // Encriptar y asignar la contraseña
+        $usuario = new User();
+        $usuario -> name = $request->name;
+        $usuario -> email = $request->email;
+        $usuario->password = bcrypt($request->password); // Encriptar y asignar la contraseña
 
         $usuario -> save();
 
@@ -53,28 +53,33 @@ class UsuarioController extends Controller
     }
 
     public function destroy($id){
-        usuario::find($id) -> delete();
+        User::find($id) -> delete();
         return redirect() -> route('usuario.index');
     }
 
     public function edit($id){
-        $usuario = usuario::find($id);
+        $usuario = User::find($id);
         return view('usuarios.edit', compact('usuario'));
     }
 
-    public function update(Request $request){       //Post y Put necesitan recibir la informacion en un request
+    public function update(Request $request){       
         $request->validate([
-            'nombre' => $request->nombre,
-            'correo' => $request->correo,
-            //'pass' => $request->pass,
-            'pass' => bcrypt($request->pass), // Asegúrate de encriptar la contraseña
+            'name' => 'required|string',
+            'email' => 'required|email|string',
+            'password' => 'nullable|string', // Hacer la contraseña opcional si no se va a cambiar
         ]);
-
-        $usuario = usuario::findOrFail($request->id);
-        echo($usuario);
-        $usuario -> usuario = $request->usuario;
+    
+        $usuario = User::findOrFail($request->id);
+        $usuario->name = $request->name;
+        $usuario->email = $request->email;
+    
+        // Si hay una nueva contraseña, la actualizamos
+        if ($request->password) {
+            $usuario->password = bcrypt($request->password);
+        }
+    
         $usuario->save();
         return redirect()->route('usuario.index');
-        return redirect()-> route('usuario.index')->with('errors', 'Error');
     }
+    
 }

@@ -41,13 +41,17 @@ class NotaApiController extends Controller
     }
 
 
-    public function store(Request $request){
-        $validator = Validator::make($request->all(),[
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'contenido' => 'required|string',
-            'tarea_tecnico_id' => 'required|exists:tarea_tecnico,id' // Valida que la asignación exista
+            'tarea_tecnico_id' => 'required|exists:tarea_tecnico,id', // Valida que la asignación exista
+            'image_1' => 'nullable|image',
+            'image_2' => 'nullable|image',
+            'image_3' => 'nullable|image',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             $data = [
                 'message' => 'Error en la validacion de los datos',
                 'errors' => $validator->errors(),
@@ -55,25 +59,43 @@ class NotaApiController extends Controller
             ];
             return response()->json($data, 400);
         }
-        $nota = Nota::create([
+
+        $nota = new Nota([
             'contenido' => $request->contenido,
             'tarea_tecnico_id' => $request->tarea_tecnico_id // Asegúrate de capturar el ID de tarea_tecnico
         ]);
 
-        if(!$nota){
+        /* Guardado de imagenes en el path */
+
+        if ($request->hasFile('image_1')) {
+            $nota->image_path_1 = $request->file('image_1')->store('images');
+        }
+
+        if ($request->hasFile('image_2')) {
+            $nota->image_path_2 = $request->file('image_2')->store('images');
+        }
+
+        if ($request->hasFile('image_3')) {
+            $nota->image_path_3 = $request->file('image_3')->store('images');
+        }
+
+        if (!$nota->save()) {
             $data = [
                 'message' => 'Error al crear la nota',
-                'status' => '500'
+                'status' => 500
             ];
             return response()->json($data, 500);
         }
 
         $data = [
             'nota' => $nota,
-            'status' => '201'
+            'status' => 201
         ];
         return response()->json($data, 201);
     }
+
+        /*-------------------------------------------------------------------------------------*/
+//------------------------------------------------------------------------------------------------
 
     public function show($id)
     {

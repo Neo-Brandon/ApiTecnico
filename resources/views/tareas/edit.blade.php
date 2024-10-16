@@ -185,8 +185,6 @@
 
         // Asignar esta cadena al campo value de un input
         document.getElementById('usuariosInput').value = idsString;
-
-
     </script>
 
 @endsection

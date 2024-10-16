@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tarea;
 use App\Models\Categoria;
-use App\Models\Usuario;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TareaController extends Controller
@@ -24,9 +24,9 @@ class TareaController extends Controller
     public function create(){
         // Obtener todos las categorias de la base de datos
         $categorias = Categoria::all();
-        $usuarios = Usuario::all();
+        $users = User::all();
 
-        return view('tareas.create', compact('categorias','usuarios'));
+        return view('tareas.create', compact('categorias','users'));
     }
 
     public function store(Request $request){
@@ -38,8 +38,8 @@ class TareaController extends Controller
         'titulo' => 'required|string|max:100',
         'descripcion' => 'required|string',
         'categoria_id' => 'required|exists:categorias,id',
-        'usuarios' => 'required|array',
-        'usuarios.*' => 'exists:usuarios,id'
+        'users' => 'required|array',
+        'users.*' => 'exists:users,id'
     ]);
 
     // Crear la tarea
@@ -52,10 +52,10 @@ class TareaController extends Controller
 
     /* convertir esa cadena de IDs separados por comas en un array antes de hacer el attach */
     /* Esto dividirá la cadena "1,2,4" en un array [1, 2, 4] que luego será procesado correctamente por Laravel. */
-    $request->merge(['usuarios' => explode(',', $request->usuarios[0])]);
+    $request->merge(['users' => explode(',', $request->users[0])]);
 
-    // Asignar usuarios a la tarea
-    $tarea->usuarios()->attach($request->usuarios); // Verifica que $request->usuarios sea un array válido
+    // Asignar users a la tarea
+    $tarea->usuarios()->attach($request->users); // Verifica que $request->users sea un array válido
 
     return redirect()->route('tarea.index')->with('success', 'Tarea guardada con éxito.');
 }
@@ -74,10 +74,10 @@ class TareaController extends Controller
         */
         // Obtener todos las categorias de la base de datos
         $categorias = Categoria::all();
-        $usuarios = Usuario::all();
+        $users = User::all();
         $tarea = tarea::find($id);
 
-        return view('tareas.edit', compact('categorias','usuarios','tarea'));
+        return view('tareas.edit', compact('categorias','users','tarea'));
     }
 
     public function update(Request $request){       //Post y Put necesitan recibir la informacion en un request
@@ -85,15 +85,43 @@ class TareaController extends Controller
             'titulo' => 'required|string',
             'descripcion' => 'required|string',
             'categoria_id' => 'required|exists:categorias,id',
-            'usuarios' => 'array',
-            'usuarios.*' => 'exists:usuarios,id'
+            'users' => 'array',
+            'users.*' => 'exists:users,id'
         ]);
 
+        //buscar tarea existente
         $tarea = tarea::findOrFail($request->id);
-        //echo($tarea);
-        $tarea -> tarea = $request->id;
+
+        // Actualizar los campos correctos
+        $tarea->titulo = $request->titulo;
+        $tarea->descripcion = $request->descripcion;
+        $tarea->categoria_id = $request->categoria_id;
+
+        // Guardar la tarea actualizada
+        $tarea->save();
+
+        // Si hay users seleccionados, actualizamos la relación
+        if ($request->has('users')) {
+            // Dividir la cadena de users en un array, si es necesario
+            $request->merge(['users' => explode(',', $request->users[0])]);
+
+            // Sincronizar la relación muchos a muchos
+            $tarea->users()->sync($request->users);
+        }
+        //$tarea -> tarea = $request->id;
         $tarea->save();
         return redirect()->route('tarea.index');
         return redirect()-> route('tarea.index')->with('errors', 'Error');
     }
+
+    public function markAsCompleted(Tarea $tarea)
+    {
+        $tarea->update([
+            'estado_id' => 2, // El estado "Completada" tiene el ID 2
+            'completed_at' => now(),
+        ]);
+
+        return redirect()->route('tareas.index')->with('success', 'Tarea marcada como finalizada.');
+    }
+
 }

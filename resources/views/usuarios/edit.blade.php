@@ -4,8 +4,8 @@
 
         <div class="container-xxl d-flex flex-column justify-content-center align-items-center" >
             <div class="welcome text-center">
-                <h2><strong>Añadir usuario</strong></h2>
-                <p>Registre un usuario nuevo</p>
+                <h2><strong>Edite el usuario</strong></h2>
+                <p>Edite nombre, permisos u otro parámetro</p>
             </div>
         </div>
 

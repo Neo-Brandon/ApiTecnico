@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Usuario;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,7 +13,7 @@ class UsuarioApiController extends Controller
      */
     public function index(){
 
-        $usuario = Usuario::all();
+        $usuario = User::all();
 
         $data = [
             'message' => $usuario,
@@ -24,9 +24,9 @@ class UsuarioApiController extends Controller
 
     public function store(Request $request){
         $validator = Validator::make($request->all(),[
-            'nombre' => 'required|string|unique:usuarios,nombre',
-            'correo' => 'required|email|string|unique:usuarios,correo',
-            'pass' => 'required|string',
+            'name' => 'required|string|unique:users,name',
+            'email' => 'required|email|string|unique:users,email',
+            'password' => 'required|string',
             'permiso_id' => 'required|exists:permisos,id' // Validar que el permiso existe
         ],[
             'email.required' => 'El campo correo es obligatorio.',
@@ -41,11 +41,11 @@ class UsuarioApiController extends Controller
             ];
             return response()->json($data, 400);
         }
-        $usuario = Usuario::create([
-            'nombre' => $request->nombre,
-            'correo' => $request->correo,
+        $usuario = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
             //'pass' => $request->pass,
-            'pass' => bcrypt($request->pass), // Asegúrate de encriptar la contraseña
+            'password' => bcrypt($request->pass), // Asegúrate de encriptar la contraseña
         ]);
 
         // Asignar permisos al usuario (usando el método attach)
@@ -60,7 +60,7 @@ class UsuarioApiController extends Controller
         }
 
         $data = [
-            'usuario' => $usuario,
+            'user' => $usuario,
             'status' => '201'
         ];
         return response()->json($data, 201);
@@ -68,7 +68,7 @@ class UsuarioApiController extends Controller
 
     public function show($id)
     {
-        $usuario = Usuario::find($id);
+        $usuario = User::find($id);
 
         if(!$usuario){
             $data = [
@@ -79,7 +79,7 @@ class UsuarioApiController extends Controller
         }
 
         $data = [
-            'usuario' => $usuario,
+            'user' => $usuario,
             'status' => 200
         ];
         return response()->json($data, 200);
@@ -87,7 +87,7 @@ class UsuarioApiController extends Controller
 
     public function destroy($id)
     {
-        $usuario = Usuario::find($id);
+        $usuario = User::find($id);
 
         if(!$usuario){
             $data = [
@@ -100,7 +100,7 @@ class UsuarioApiController extends Controller
         $usuario->delete();
         
         $data = [
-            'usuario' => 'usuario eliminado',
+            'user' => 'usuario eliminado',
             'status' => 200
         ];
         return response()->json($data, 200);
@@ -109,7 +109,7 @@ class UsuarioApiController extends Controller
 
     public function update(Request $request, $id)
     {
-        $usuario = Usuario::find($id);
+        $usuario = User::find($id);
 
         if(!$usuario){
             $data = [
@@ -120,9 +120,9 @@ class UsuarioApiController extends Controller
         }
 
         $validator = Validator::make($request->all(),[
-            'nombre' => 'required|string|unique:usuarios,nombre',
-            'correo' => 'required|string|unique:usuarios,correo',
-            'pass' => 'required|string',
+            'name' => 'required|string|unique:users,name',
+            'email' => 'required|string|unique:users,email',
+            'password' => 'required|string',
             'permiso_id' => 'required|exists:permisos,id' // Validar que el permiso existe
         ]);
 
@@ -135,14 +135,14 @@ class UsuarioApiController extends Controller
             return response()->json($data, 400);
         }
 
-        $usuario ->nombre = $request->nombre;
-        $usuario ->correo = $request->correo;
-        $usuario ->pass = $request->pass;
+        $usuario ->name = $request->name;
+        $usuario ->email = $request->email;
+        $usuario ->password = $request->password;
         $usuario -> save();
 
         $data =[
             'message' => 'usuario actualizado',
-            'usuario' => $usuario,
+            'user' => $usuario,
             'status' => 200
         ];
 

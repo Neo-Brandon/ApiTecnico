@@ -29,9 +29,7 @@ class TareaApiController extends Controller
         ]);
         */
 
-        return response()->json(
-             $tareas
-        );
+        return response()->json($tareas);
     }
 
 

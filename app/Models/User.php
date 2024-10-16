@@ -22,6 +22,17 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function permisos()
+    {
+        return $this->belongsToMany(Permiso::class, 'usuario_permiso');
+    }
+
+    // Relación muchos a muchos con tareas
+    public function tareas()
+    {
+        return $this->belongsToMany(Tarea::class, 'tarea_tecnico');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

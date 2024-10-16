@@ -64,8 +64,8 @@
                                 <!-- Select Multiple con Select2 -->
                                 <label for="usuariosModal" class="form-label">Usuarios</label>
                                 <select class="form-select" id="usuariosModal" multiple>
-                                    @foreach($usuarios as $usuario)
-                                        <option value="{{ $usuario->id }}">{{ $usuario->nombre }}</option>
+                                    @foreach($users as $usuario)
+                                        <option value="{{ $usuario->id }}">{{ $usuario->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -86,7 +86,7 @@
                 </div>
 
                 <!-- Campo oculto para enviar los usuarios seleccionados en el formulario -->
-                <input type="hidden" name="usuarios[]" id="usuariosSeleccionadosInput">
+                <input type="hidden" name="users[]" id="usuariosSeleccionadosInput">
 
                 &nbsp;
                 <!-- Envolver el botón en un div con el mismo ancho que el input -->

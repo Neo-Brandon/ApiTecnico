@@ -18,7 +18,10 @@ return new class extends Migration
             // Cambiar el campo categoria a unsignedBigInteger para la clave foránea
             $table->unsignedBigInteger('categoria_id');
             $table->unsignedBigInteger('estado_id')->default(1); // Añadir campo estado_id con valor por defecto
-            $table->timestamps();
+            /*$table->timestamps();*/
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
 
              // Definir la clave foránea
              $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('cascade');
@@ -39,8 +42,7 @@ return new class extends Migration
             $table->dropForeign(['estado_id']);
         });
 
-        //Eliminamos la veriicacion de llaves foraneas para borrar
-        Schema::disableForeignKeyConstraints();
+        
         // Luego elimina la tabla tareas
         Schema::dropIfExists('tareas');
         //reactivamos las verificaciones para integridad
