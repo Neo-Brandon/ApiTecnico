@@ -38,9 +38,9 @@ class TareaApiController extends Controller
         $validator = Validator::make($request->all(), [
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string',
-            'categoria_id' => 'required|exists:categorias,id', // Asegúrate de que la categoría existe
-            'usuarios' => 'required|array', // Validar que venga un array de usuarios
-            'usuarios.*' => 'exists:usuarios,id' // Validar que cada usuario exista en la tabla usuarios
+            'categoria_id' => 'required|exists:categorias,id',
+            'users' => 'required|array',
+            'users.*' => 'exists:users,id'
         ]);
 
         if ($validator->fails()) {
@@ -56,7 +56,7 @@ class TareaApiController extends Controller
         $tarea = Tarea::create([
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
-            'categoria_id' => $request->categoria_id // Asignar la categoría
+            'categoria_id' => $request->categoria_id
         ]);
 
         // Si la tarea no se crea correctamente
@@ -69,7 +69,7 @@ class TareaApiController extends Controller
         }
 
         // Asignar usuarios a la tarea
-        $tarea->usuarios()->attach($request->usuarios); // Cambia 'tecnicos' por 'usuarios'
+        $tarea->usuarios()->attach($request->users);
 
         // Respuesta de éxito
         $data = [

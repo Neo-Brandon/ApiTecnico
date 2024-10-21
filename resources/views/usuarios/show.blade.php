@@ -3,7 +3,7 @@
 @section('content')
     <div class="container text-center"> <!-- Centrado del contenido -->
         <div class="mb-4">
-            <h1>Datos de {{ $usuario->nombre }}</h1>
+            <h1>Datos de {{ $usuario->name }}</h1>
         </div>
 
         <table class="table table-hover table-striped w-50 mx-auto"> <!-- Centramos la tabla con w-50 y mx-auto -->
@@ -14,15 +14,15 @@
                 </tr>
                 <tr>
                     <td><strong>Nombre:</strong></td>
-                    <td>{{ $usuario->nombre }}</td> <!-- Mostramos el nombre del usuario -->
+                    <td>{{ $usuario->name }}</td> <!-- Mostramos el nombre del usuario -->
                 </tr>
                 <tr>
                     <td><strong>Correo:</strong></td>
-                    <td>{{ $usuario->correo }}</td> <!-- Mostramos el nombre del usuario -->
+                    <td>{{ $usuario->email }}</td> <!-- Mostramos el nombre del usuario -->
                 </tr>
                 <tr>
                     <td><strong>Contraseña:</strong></td>
-                    <td>{{ $usuario->pass }}</td> <!-- Mostramos el nombre del usuario -->
+                    <td>{{ $usuario->password }}</td> <!-- Mostramos el nombre del usuario -->
                 </tr>
             </tbody>
         </table>

@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notas', function (Blueprint $table) {
+        Schema::create('informe', function (Blueprint $table) {
             $table->id();
+            $table->text('titulo');
             $table->text('contenido');
             $table->string('image_path_1')->nullable(); // Ruta de imagen 1
             $table->string('image_path_2')->nullable(); // Ruta de imagen 2
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notas');
+        Schema::dropIfExists('informe');
     }
 };

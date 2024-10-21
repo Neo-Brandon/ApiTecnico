@@ -14,7 +14,6 @@
         background-color: #fff;
         padding: 20px;
         border-radius: 8px;
-        /*box-shadow: 0 0 10px #6b91ce;*/
     }
 
     .section {
@@ -48,25 +47,39 @@
         gap: 20px;
         width: 100%;
         align-items: flex-start;
-        flex-wrap: wrap; /* Permitir que los elementos se envuelvan si es necesario */
+        flex-wrap: wrap;
     }
 
     .flex-item {
         flex: 1;
         margin-right: 10px;
-        min-width: 250px; /* Establece un ancho mínimo para evitar que los elementos se vuelvan demasiado pequeños */
-
+        min-width: 250px;
     }
 
     #tecnicos-section {
-        flex-grow: 2; /* Este elemento ocupará el doble de espacio */
+        flex-grow: 2;
     }
 
-    .grid-item input {
-        margin-top: 5px;
+    .comment-section {
+        margin-top: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
         padding: 10px;
-        width: 100%;
-        box-sizing: border-box;
+    }
+
+    .comment {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .comment-author {
+        font-weight: bold;
+    }
+
+    .comment-text {
+        margin-top: 5px;
     }
 
     textarea {
@@ -99,7 +112,7 @@
     <div class="container">
         <div class="flex-container">
             <div class="section grid-item flex-item">
-                <label for="fechaPublica">Fecha de publicacion:</label>
+                <label for="fechaPublica">Fecha de publicación:</label>
                 <input disabled id="fechaPublica" value="{{ $tarea->created_at->format('d/m/Y H:i') }}">
             </div>
     
@@ -110,7 +123,7 @@
         </div>
 
         <div class="section">
-            <label for="titulo">Titulo:</label>
+            <label for="titulo">Título:</label>
             <textarea disabled id="titulo" rows="2">{{ $tarea->titulo }}</textarea>
         </div>
 
@@ -153,9 +166,20 @@
         </td>
 
         &nbsp;
-        <div class="section">
-            <label for="reportes">Reportes de tarea:</label>
-            <textarea id="reportes" rows="5"></textarea>
+
+        <!-- Sección de comentarios -->
+        <div class="comment-section">
+            <label for="comentarios">Comentarios:</label>
+            @if($tarea->comentarios->isNotEmpty())
+                @foreach($tarea->comentarios as $comentario)
+                    <div class="comment">
+                        <div class="comment-author">{{ $comentario->usuario->nombre ?? 'Usuario desconocido' }}</div>
+                        <div class="comment-text">{{ $comentario->texto }}</div>
+                    </div>
+                @endforeach
+            @else
+                <p>No hay comentarios para esta tarea.</p>
+            @endif
         </div>
     </div>
 </div>

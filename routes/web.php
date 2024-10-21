@@ -5,6 +5,7 @@ use App\Http\Controllers\permisoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\TareaController;
+use App\Http\Controllers\InformeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -25,8 +26,8 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::get('/register', [RegisteredUserController::class, 'create'])->middleware('guest');
-Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('guest');
+//Route::get('/register', [RegisteredUserController::class, 'create'])->middleware('guest');
+//Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('guest');
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('guest');
@@ -37,9 +38,11 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->midd
 require __DIR__.'/auth.php';
 
 // Administrador -----------------------------------------------------------------------------------
-Route::get('/admin', function () {
-    return view('/admin/index');
-});
+//Route::middleware(['auth'])->group(function () {
+    Route::get('/admin', function () {
+        return view('/admin/index');
+    });
+//});
 
 Route::get('/admin/añadir', function () {
     return view('/admin/añadir');
@@ -49,6 +52,15 @@ Route::get('/admin/añadir', function () {
 Route::get('/tecnico', function () {
     return view('/tecnico/index');
 });
+
+// Crear informes - Tecnico
+Route:: get('/informes', [InformeController::class, 'index'])-> name('informe.index');
+Route:: get('/informes/create', [InformeController::class, 'create'])->name('informe.create');
+Route:: get('/informes/{id}', [InformeController::class, 'show'])->name('informe.show');
+Route:: post('/informes', [InformeController::class, 'store'])->name('informe.store');
+Route:: delete('/informes/delete/{id}', [InformeController::class, 'destroy'])->name('informe.destroy');
+Route:: get('/informes/edit/{id}', [InformeController::class, 'edit'])-> name('informe.edit');
+Route:: put('/informes/update/{id}', [InformeController::class, 'update'])-> name('informe.update');
 
 
 // Rutas Permisos -------------------------------------------------------------------------------------------

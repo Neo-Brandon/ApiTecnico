@@ -20,7 +20,28 @@ class TareaController extends Controller
         $tarea = tarea::find($id);        //Encontrará el ID que estaba buscando
         return view('tareas.show', compact('tarea'));
     }
+    /*
+    public function show($id){
+        // Encontrar la tarea por ID
+        $tarea = Tarea::find($id);
+        
+        // Asegúrate de que la tarea existe antes de continuar
+        if (!$tarea) {
+            return redirect()->route('tarea.index')->with('error', 'Tarea no encontrada.');
+        }
+        
+        // Obtener los informes relacionados a la tarea y al técnico (usuario) en sesión actual
+        $informes = Informe::whereHas('tareaTecnico', function ($query) {
+            $query->where('usuario_id', auth()->user()->id); // Filtrar por el usuario en sesión
+        })
+        ->whereHas('tareaTecnico.tarea', function ($query) use ($id) {
+            $query->where('tarea_id', $id); // Filtrar por la tarea actual
+        })->get();
 
+        // Pasar tanto la tarea como los informes a la vista
+        return view('tareas.show', compact('tarea', 'informes'));
+    }
+*/
     public function create(){
         // Obtener todos las categorias de la base de datos
         $categorias = Categoria::all();

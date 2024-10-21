@@ -3,11 +3,20 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\permisoApiController;
+use App\Http\Controllers\InformeApiController;
 use App\Http\Controllers\usuarioApiController;
 use App\Http\Controllers\categoriaApiController;
 use App\Http\Controllers\tareaApiController;
 use App\Http\Controllers\NotaApiController;
 
+
+// Tecnico - Informes -------------------------------------------------------------------------
+Route:: get('/informes', [InformeApiController::class, 'index']);
+Route::get('/informes/{id}', [InformeApiController::class, 'show']);
+Route::post('/informes', [InformeApiController::class, 'store']);
+Route::put('/informes/{id}', [InformeApiController::class, 'update']);
+Route::delete('/informes/{id}', [InformeApiController::class, 'destroy']);
+//------------------------------------------------------------------------
 Route::get('/permisos', [permisoApiController::class, 'index']);
 Route::get('/permisos/{id}', [permisoApiController::class, 'show']);
 Route::post('/permisos', [permisoApiController::class, 'store']);
