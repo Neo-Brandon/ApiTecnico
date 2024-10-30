@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Usuarios')
+
 @section('content')
 
         <div class="container-xxl d-flex flex-column justify-content-center align-items-center" >

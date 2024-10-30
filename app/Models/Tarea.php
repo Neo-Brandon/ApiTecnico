@@ -22,6 +22,7 @@ class Tarea extends Model
     protected $dates = ['created_at', 'updated_at', 'completed_at'];
 
     //Escuchamos cuando se necesite actualizar el estado de la tarea
+    //es decir se registra la fecha y hora de cuando se ha completado
     protected static function booted(){
         static::updating(function($tarea){
             // Si el estado es 2 (completada) y completed_at es nulo, entonces registramos la fecha/hora
@@ -41,6 +42,11 @@ class Tarea extends Model
     {
         //return $this->belongsToMany(User::class, 'tarea_tecnico'); // Cambia el nombre de la tabla pivote según corresponda
         return $this->belongsToMany(User::class, 'tarea_tecnico', 'tarea_id', 'usuario_id');
+    }
+
+    public function informes()
+    {
+        return $this->hasManyThrough(Informe::class, TareaTecnico::class, 'tarea_id', 'tarea_tecnico_id');
     }
 
     // Definir la relación con el modelo Estado

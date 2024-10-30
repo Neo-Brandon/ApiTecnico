@@ -30,4 +30,7 @@ class Informe extends Model
     {
         return $this->belongsTo(TareaTecnico::class, 'tarea_tecnico_id');
     }
+
+    
+    
 }

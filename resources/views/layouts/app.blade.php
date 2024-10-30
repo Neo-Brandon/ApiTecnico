@@ -313,17 +313,21 @@
     </style>
 
     <!-- Scripts -->
-    
+    <!-- Este Script debe forzosamente cargarse aqui, no debe repetirse su carga -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <header class="container-fluid d-flex justify-content-between align-items-center p-3 bg-white shadow-sm">
-        <h1 class="h3">Inicio</h1>
+        <!-- Seccion del titulo dinamico  -->
+        <h3 style="margin: 0pt; padding:0pt">
+            @yield('title', 'Default Title')
+        </h3>
+
         <nav class="d-flex align-items-center">
             <div class="dropdown me-5"> <!-- Agregando margen derecho -->
                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ Auth::check() ? Auth::user()->name : 'Invitado' }}
+                    {{ Auth::user()->roles->pluck('name')->implode(', ')}}: {{ Auth::check() ? Auth::user()->name : 'Invitado' }}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                     <li><a class="dropdown-item" href="{{ route('profile.edit') }}">{{ __('Profile') }}</a></li>
@@ -425,14 +429,15 @@
                     closeMenu(); // Llamar a la función de cerrar el menú
                 }
             }
-    
+
             function closeMenu() {
                 sidebar.style.right = '-250px'; // Ocultar el sidebar
                 overlay.style.display = 'none'; // Ocultar el overlay
             }
         });
     </script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <!--<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
     </div>

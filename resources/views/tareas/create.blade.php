@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Tareas')
+
 @section('content')
   
 <style>
@@ -7,6 +9,11 @@
         display: inline-block;
         margin-bottom: 5px;
         cursor: pointer;
+    }
+
+    .boton-accion:hover{
+        transform: scale(1.01); /* Agranda el recuadro ligeramente */
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); /* Aumenta el efecto de sombra */
     }
 
 </style>
@@ -22,7 +29,7 @@
                 @csrf
                 <div class="mb-3">
                     <label for="titulo" class="form-label">Titulo de la tarea:</label>
-                    <input type="text" id="titulo" name="titulo" class="form-control">
+                    <input type="text" id="titulo" name="titulo" class="form-control my-custom-input">
                     @error('titulo')
                         <div class="alert alert-danger">Debe escribirse un titulo</div>
                     @enderror
@@ -30,7 +37,7 @@
 
                 <div class="mb-3">
                     <label for="descripcion" class="form-label">Descripción:</label>
-                    <textarea id="descripcion" placeholder="Describa la tarea a realizar" name="descripcion" class="form-control"></textarea>
+                    <textarea id="descripcion" placeholder="Describa la tarea a realizar" name="descripcion" class="form-control my-custom-input"></textarea>
                     @error('descripcion')
                         <div class="alert alert-danger">Debe escribirse una descripcion</div>
                     @enderror
@@ -38,8 +45,8 @@
 
                 <div class="mb-3">
                     <div class="col-sm-6">
-                        <label for="categoria_id" class="form-label">Categoría de la tarea:</label>
-                        <select class="form-select" id="categoria_id" name="categoria_id">
+                        <label for="categoria_id" class="form-label">Seleccione la categoría de la tarea:</label>
+                        <select class="form-select " id="categoria_id" name="categoria_id">
                             @foreach($categorias as $categoria)
                                 <option value="{{ $categoria->id }}">{{ $categoria->categoria }}</option>
                             @endforeach
@@ -48,7 +55,7 @@
                 </div>
 
                 <!-- Botón para abrir el modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#selectUsersModal">
+                <button type="button" class="btn my-custom-btn" data-bs-toggle="modal" data-bs-target="#selectUsersModal">
                     Seleccionar Usuarios
                 </button>
 
@@ -80,7 +87,7 @@
                 <!-- Contenedor donde se mostrarán los usuarios seleccionados como etiquetas -->
                 <div class="mt-3">
                     <label for="usuariosSeleccionados" class="form-label">Usuarios Seleccionados</label>
-                    <div id="usuariosSeleccionados" class="border p-2" style="min-height: 50px; max-width: 400px;">
+                    <div id="usuariosSeleccionados" class="border p-2 my-custom-input" style="min-height: 50px; max-width: 400px;">
                         <!-- Aquí aparecerán las etiquetas de usuarios seleccionados -->
                     </div>
                 </div>
@@ -91,7 +98,7 @@
                 &nbsp;
                 <!-- Envolver el botón en un div con el mismo ancho que el input -->
                 <div class="mb-3">
-                    <button class="btn btn-primary w-100" type="submit">Guardar</button>
+                    <button class="btn btn-primary w-100 boton-accion" type="submit">Guardar</button>
                 </div>
             </form>
         </div>
@@ -149,7 +156,7 @@
             });
             $('#usuariosSeleccionadosInput').val(selectedUsers);
         }
-        //console.log($.fn.select2);
+        console.log($.fn.select2);
         //console.log(formData);
 
 

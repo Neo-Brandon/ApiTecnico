@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tarea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class TareaApiController extends Controller
 {
@@ -195,5 +196,25 @@ public function show($id)
             'status' => 200
         ]);
     }
+
     
+    //Metodo para autenticar usuario y mostrra solo sus tareas relacionadas
+    public function loadTasks()
+    {
+        // Obtener el usuario autenticado usando el guard 'api'
+        $user = Auth::guard('api')->user();
+
+        // Asegúrate de que se ha autenticado un usuario
+        if (!$user) {
+            return response()->json(['error' => 'No autenticado'], 401);
+        }
+        dd($user);
+        // Obtener tareas relacionadas con el usuario autenticado
+        $tareas = Tarea::whereHas('usuarios', function ($query) use ($user) {
+            $query->where('user_id', $user->id); // Ajusta la clave foránea al nombre de la tabla pivote correcta
+        })->with('categoria', 'estado')->get();
+
+        return response()->json($tareas);
+    }
+
 }

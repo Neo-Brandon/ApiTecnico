@@ -6,6 +6,7 @@ use App\Models\Tarea;
 use App\Models\Categoria;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TareaController extends Controller
 {
@@ -17,7 +18,15 @@ class TareaController extends Controller
     }
 
     public function show($id){
-        $tarea = tarea::find($id);        //Encontrará el ID que estaba buscando
+        /*$tarea = tarea::find($id);        //Encontrará el ID que estaba buscando
+        return view('tareas.show', compact('tarea'));*/
+
+        $tarea = Tarea::with(['informes','usuarios'])->find($id); // Cargar la tarea y sus informes relacionados
+
+        if (!$tarea) {
+            return redirect()->route('tarea.index')->with('error', 'Tarea no encontrada.');
+        }
+        //dd($tarea);
         return view('tareas.show', compact('tarea'));
     }
     /*
@@ -135,14 +144,42 @@ class TareaController extends Controller
         return redirect()-> route('tarea.index')->with('errors', 'Error');
     }
 
-    public function markAsCompleted(Tarea $tarea)
+    //Metodos personalizados para cosas especificas---------------------------------------------------
+
+    //Metodo para autenticar usuario y mostrra solo sus tareas relacionadas
+    public function misTareas()
     {
-        $tarea->update([
-            'estado_id' => 2, // El estado "Completada" tiene el ID 2
-            'completed_at' => now(),
-        ]);
-
-        return redirect()->route('tareas.index')->with('success', 'Tarea marcada como finalizada.');
+        $user = Auth::user();
+    
+        if (!$user) {
+            return response()->json(['error' => 'No autenticado'], 401);
+        }
+    
+        // Obtener solo las tareas relacionadas con el usuario autenticado
+        $tareas = Tarea::whereHas('usuarios', function ($query) use ($user) {
+            $query->where('users.id', $user->id);
+        })->with('categoria', 'estado')->get();
+    
+        return response()->json($tareas);
     }
+    
+/*
+    public function loadTasks()
+    {
+        // Obtener el usuario autenticado usando el guard 'web' si estás utilizando sesiones y no tokens de API.
+        $user = Auth::user();
 
+        // Asegúrate de que se ha autenticado un usuario
+        if (!$user) {
+            return response()->json(['error' => 'No autenticado'], 401);
+        }
+
+        // Obtener tareas relacionadas con el usuario autenticado
+        $tareas = Tarea::whereHas('usuarios', function ($query) use ($user) {
+            $query->where('users.id', $user->id);
+        })->with('categoria', 'estado')->get();
+
+        return response()->json($tareas);
+    }
+*/
 }

@@ -14,11 +14,13 @@ class UsuariosTableSeeder extends Seeder
     public function run(): void
     {
         //
+        /*
         DB::table('categorias')->insert([
             ['categoria' => 'Hardware'],
             ['categoria' => 'Software'],
             ['categoria' => 'Redes'],
             ['categoria' => 'Display'],
         ]);
+        */
     }
 }

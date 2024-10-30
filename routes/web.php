@@ -10,15 +10,42 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\TestController;
+use Illuminate\Support\Facades\Auth;
+
+
+// Rutas de pruebas ---------------------------------------------------------------------
+Route::get('/check-role', [TestController::class, 'checkRole']);
+
+// Fin Rutas de pruebas ---------------------------------------------------------------------
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+/*
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('/admin/index');
 })->middleware(['auth', 'verified'])->name('dashboard');
+*/
 
+
+Route::get('/dashboard', function () {
+    $user = Auth::user();
+
+    // Por alguna razon desconocida Mi version de Inteliphense me marca
+    // Como error la funcion hasRole(), es un falso error ya que funciona
+    if ($user->hasRole('Administrador')) {
+        return view('admin.index');
+    } elseif ($user->hasRole('Tecnico')) {
+        return view('tecnico.index');
+    } else {
+        return redirect('/'); // O cualquier otra ruta de redirección por defecto
+    }
+})->middleware(['auth', 'verified', 'role:Administrador,Tecnico'])->name('dashboard');
+
+
+// Ruta aun por confirmar, no hay nada establecido en el perfil, por ahora
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -26,6 +53,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
+//Rutas inactivas debido a la nula necesidad de registros masivos
 //Route::get('/register', [RegisteredUserController::class, 'create'])->middleware('guest');
 //Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('guest');
 
@@ -38,20 +66,51 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->midd
 require __DIR__.'/auth.php';
 
 // Administrador -----------------------------------------------------------------------------------
-//Route::middleware(['auth'])->group(function () {
+
+/*
+Route::middleware(['auth'])->group(function () {
     Route::get('/admin', function () {
         return view('/admin/index');
     });
-//});
+});
+*/
 
+
+Route::middleware(['auth', 'verified', 'role:Administrador'])->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('admin.index');
+    })->name('admin.dashboard');
+
+    // Otras rutas exclusivas para administradores...
+    Route::get('/admin', function () {
+        return view('/admin/index');
+    });
+});
+
+//Ruta para el menu "añadir" del administrador
 Route::get('/admin/añadir', function () {
     return view('/admin/añadir');
 });
 
 // Tecnico -----------------------------------------------------------------------------------
-Route::get('/tecnico', function () {
-    return view('/tecnico/index');
+
+// Rutas protegidas para el usuario tecnico
+Route::middleware(['auth', 'verified', 'role:Tecnico'])->group(function () {
+    Route::get('/tecnico/dashboard', function () {
+        return view('tecnico.index');
+    })->name('tecnico.dashboard');
+
+    // Otras rutas exclusivas para Tecnicos...
+    
+    Route::get('/tecnico', function () {
+        return view('/tecnico/index');
+    });
+    
 });
+
+
+
+//Route::middleware('auth:api')->get('/user-tasks', [TareaController::class, 'loadTasks']);
 
 // Crear informes - Tecnico
 Route:: get('/informes', [InformeController::class, 'index'])-> name('informe.index');
@@ -94,6 +153,7 @@ Route:: get('/usuarios/edit/{id}', [UsuarioController::class, 'edit'])-> name('u
 Route:: put('/usuarios/update/{id}', [UsuarioController::class, 'update'])-> name('usuario.update');
 
 // Rutas Usuarios -------------------------------------------------------------------------------------------
+Route::get('/mis-tareas', [TareaController::class, 'misTareas'])->name('tarea.misTareas');
 
 Route:: get('/tareas', [TareaController::class, 'index'])-> name('tarea.index');
 Route:: get('/tareas/create', [TareaController::class, 'create'])->name('tarea.create');

@@ -13,10 +13,10 @@ class TareaTecnico extends Model
 
     protected $fillable = ['tarea_id', 'usuario_id'];
 
-    // Relación con el modelo Nota
-    public function notas()
+    // Relación con el modelo Informe
+    public function Infome()
     {
-        return $this->hasMany(Nota::class, 'tarea_tecnico_id');
+        return $this->hasMany(Informe::class, 'tarea_tecnico_id');
     }
 
     // Relación con el modelo Tarea

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Categorias')
+
 @section('content')
 <div class=" container-xxl d-flex justify-content-center">
     <!-- Ajustes para la responsividad de la pagina-->

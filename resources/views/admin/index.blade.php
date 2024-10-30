@@ -1,11 +1,13 @@
 @extends('layouts.app')
 
+@section('title', 'Inicio')
+
 @section('content')
 
 
     <div class="container">
         <div class="welcome">
-            <h2><strong>Bienvenido Administrador</strong></h2>
+            <h2><strong>Bienvenido {{ Auth::user()->name }}</strong></h2>
             <p>Toque cualquier recuadro para desplegar</p>
         </div>
 

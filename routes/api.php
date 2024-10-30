@@ -11,7 +11,7 @@ use App\Http\Controllers\NotaApiController;
 
 
 // Tecnico - Informes -------------------------------------------------------------------------
-Route:: get('/informes', [InformeApiController::class, 'index']);
+Route::get('/informes', [InformeApiController::class, 'index']);
 Route::get('/informes/{id}', [InformeApiController::class, 'show']);
 Route::post('/informes', [InformeApiController::class, 'store']);
 Route::put('/informes/{id}', [InformeApiController::class, 'update']);
@@ -22,6 +22,8 @@ Route::get('/permisos/{id}', [permisoApiController::class, 'show']);
 Route::post('/permisos', [permisoApiController::class, 'store']);
 Route::put('/permisos/{id}', [permisoApiController::class, 'update']);
 Route::delete('/permisos/{id}', [permisoApiController::class, 'destroy']);
+
+//Route::middleware('auth:api')->get('/mis-tareas', [TareaApiController::class, 'loadTasks']);
 
 //------------------------------------------------------------------------
 

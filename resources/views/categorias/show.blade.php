@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Categorias')
+
 @section('content')
     <div class="container text-center"> <!-- Centrado del contenido -->
         <div class="mb-4">

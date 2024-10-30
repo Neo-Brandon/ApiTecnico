@@ -19,7 +19,14 @@ class DatabaseSeeder extends Seeder
             EstadosTableSeeder::class,
             PermisosTableSeeder::class,
             CategoriasTableSeeder::class,
+            RolesAndPermissionsSeeder::class,
+            UsuariosSeeder::class,
         ]);
+
+        /*
+            $this->call(RolesAndPermissionsSeeder::class);
+            $this->call(UsuariosTableSeeder::class);
+        */
 
         /*
         User::factory()->create([

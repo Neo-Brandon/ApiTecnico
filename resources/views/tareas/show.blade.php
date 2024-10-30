@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Tareas')
+
 @section('content')
 <style>
     * {
@@ -56,6 +58,13 @@
         min-width: 250px;
     }
 
+    .grid-item input {
+        margin-top: 5px;
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
     #tecnicos-section {
         flex-grow: 2;
     }
@@ -85,6 +94,11 @@
     textarea {
         resize: none;
     }
+
+    .boton-accion:hover{
+        transform: scale(1.02); /* Agranda el recuadro ligeramente */
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); /* Aumenta el efecto de sombra */
+    }
 </style>
 
 <div class="container-xxl d-flex flex-column justify-content-center align-items-center wd-90">
@@ -92,7 +106,7 @@
         <tr>
             <td class="text-start" style="width: 33%;">
                 <div class="mt-3">
-                    <a class="btn my-custom-btn" href="{{ route('tarea.index', $tarea->id) }}">Regresar</a>
+                    <a class="btn my-custom-btn boton-accion" href="{{ route('tarea.index', $tarea->id) }}">Regresar</a>
                 </div>
             </td>
             <td class="text-center" style="width: 33%;">
@@ -103,7 +117,7 @@
             </td>
             <td class="text-end" style="width: 33%;">
                 <div class="mt-3">
-                    <a class="btn btn-success" href="{{ route('tarea.edit', $tarea->id) }}">Modificar</a>
+                    <a class="btn btn-success boton-accion" href="{{ route('tarea.edit', $tarea->id) }}">Modificar</a>
                 </div>
             </td>
         </tr>
@@ -139,7 +153,8 @@
                     @if($tarea->usuarios->isNotEmpty())
                         <ul>
                             @foreach ($tarea->usuarios as $usuario)
-                                <li>{{ $usuario->nombre }}</li>
+                            <!-- Cambio del campo de 'nombre' por 'name' debido al cambio de modelo-->
+                                <li>{{ $usuario->name }}</li>
                             @endforeach
                         </ul>
                     @else
@@ -167,20 +182,40 @@
 
         &nbsp;
 
-        <!-- Sección de comentarios -->
+        <!-- Sección de informes -->
         <div class="comment-section">
-            <label for="comentarios">Comentarios:</label>
-            @if($tarea->comentarios->isNotEmpty())
-                @foreach($tarea->comentarios as $comentario)
+            <label for="informes">Informes:</label>
+            @if($tarea->informes->isNotEmpty())
+                @foreach($tarea->informes as $informe)
                     <div class="comment">
-                        <div class="comment-author">{{ $comentario->usuario->nombre ?? 'Usuario desconocido' }}</div>
-                        <div class="comment-text">{{ $comentario->texto }}</div>
+                        <div class="comment-title">
+                            <h3>{{ $informe->titulo ?? 'Sin titulo' }}</h3>
+                        </div>
+                        <div class="comment-author">Por:
+                            @if($tarea->usuarios->isNotEmpty())
+                                {{ $tarea->usuarios->pluck('name')->implode(', ') }}
+                            @else
+                                Usuario desconocido
+                            @endif
+                        </div>
+                        <div class="comment-text">{{ $informe->contenido }}</div>
+                        <!-- Puedes agregar imágenes si lo deseas -->
+                        @if($informe->image_path_1)
+                            <img src="{{ asset('storage/' . $informe->image_path_1) }}" alt="Imagen 1" class="img-fluid">
+                        @endif
+                        @if($informe->image_path_2)
+                            <img src="{{ asset('storage/' . $informe->image_path_2) }}" alt="Imagen 2" class="img-fluid">
+                        @endif
+                        @if($informe->image_path_3)
+                            <img src="{{ asset('storage/' . $informe->image_path_3) }}" alt="Imagen 3" class="img-fluid">
+                        @endif
                     </div>
                 @endforeach
             @else
-                <p>No hay comentarios para esta tarea.</p>
+                <p>No hay informes para esta tarea.</p>
             @endif
         </div>
+        
     </div>
 </div>
 @endsection

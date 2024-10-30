@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Permiso; // Importar el modelo Permiso
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+
 
 class UsuarioController extends Controller
 {
@@ -24,7 +27,11 @@ class UsuarioController extends Controller
         // Obtener todos los permisos de la base de datos
         $permisos = Permiso::all();
 
-        return view('usuarios.create', compact('permisos'));
+        $roles = Role::all();
+        return view('usuarios.create', compact('roles'));
+
+
+        //return view('usuarios.create', compact('permisos'));
     }
 
     public function store(Request $request){
@@ -32,7 +39,8 @@ class UsuarioController extends Controller
             'name' => 'required|string|unique:users,name',
             'email' => 'required|email|string|unique:users,email',
             'password' => 'required|string',
-            'permiso_id' => 'required|exists:permisos,id' // Validar que el permiso existe
+            'role' => 'required|exists:roles,name',
+            //'permiso_id' => 'required|exists:permisos,id' // Validar que el permiso existe
         ],[
             'email.required' => 'El campo correo es obligatorio.',
             'email.email' => 'Por favor, introduce una dirección de correo electrónico válida.',
@@ -46,7 +54,8 @@ class UsuarioController extends Controller
         $usuario -> save();
 
          // Asignar permisos al usuario (usando el método attach)
-         $usuario->permisos()->attach($request->permiso_id); // Aquí debes usar $request->permiso_id
+         //$usuario->permisos()->attach($request->permiso_id); // Aquí debes usar $request->permiso_id
+         $usuario->assignRole($request->role_id);
 
         return redirect()-> route('usuario.index');
         return redirect()-> route('usuario.index')->with('errors', 'Error');
